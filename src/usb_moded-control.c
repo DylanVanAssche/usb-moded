@@ -666,11 +666,11 @@ static void control_rethink_usb_mode(void)
      * Normalize situation by blocking all dynamic modes until
      * bootup has been finished.
      */
-    if( !usbmoded_init_done_p() ) {
+    /*if( !usbmoded_init_done_p() ) {
         log_debug("in bootup; dynamic modes blocked");
         use_mode(MODE_CHARGING_FALLBACK);
         goto MODESET;
-    }
+    }*/
 
     /* Handle shutdown override
      *
