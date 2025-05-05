@@ -805,6 +805,9 @@ configfs_init(void)
     /* Prep: mtp_mode */
     configfs_register_function(FUNCTION_MTP);
 
+    /* Prep: Android Open Accessory */
+    configfs_register_function("ffs.aoa");
+
     /* Prep: developer_mode */
     configfs_register_function(FUNCTION_RNDIS);
     if( (text = mac_read_mac()) ) {
