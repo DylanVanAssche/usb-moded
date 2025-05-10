@@ -93,6 +93,7 @@
 
 # define MODE_FFS_DAEMON_START           "ffs_daemon_start"
 # define MODE_FFS_DAEMON_STOP            "ffs_daemon_stop"
+# define MODE_FFS_DAEMON_MOUNTPOINT      "ffs_daemon_mountpoint"
 
 /* ========================================================================= *
  * Types
@@ -136,6 +137,7 @@ typedef struct modedata_t
 
     gchar *ffs_daemon_start;               /**< Command to execute when starting an USB mode */
     gchar *ffs_daemon_stop;                /**< Command to execute when stopping an USB mode */
+    gchar *ffs_daemon_mountpoint;          /**< Device mountpoint for userspace FunctionFS daemon */
 
 } modedata_t;
 

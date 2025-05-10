@@ -104,6 +104,7 @@ modedata_free(modedata_t *self)
 #endif
         g_free(self->ffs_daemon_start);
         g_free(self->ffs_daemon_stop);
+        g_free(self->ffs_daemon_mountpoint);
         modedata_flush_settings(self);
         free(self);
     }
@@ -157,6 +158,7 @@ modedata_copy(const modedata_t *that)
     self->cached_netmask             = g_strdup(that->cached_netmask);
     self->ffs_daemon_start          = g_strdup(that->ffs_daemon_start);
     self->ffs_daemon_stop           = g_strdup(that->ffs_daemon_stop);
+    self->ffs_daemon_mountpoint          = g_strdup(that->ffs_daemon_mountpoint);
 
 EXIT:
     return self;
@@ -283,6 +285,7 @@ modedata_load(const gchar *filename)
 #endif
     self->ffs_daemon_start          = g_key_file_get_string(settingsfile,  MODE_OPTIONS_ENTRY, MODE_FFS_DAEMON_START, NULL);
     self->ffs_daemon_stop           = g_key_file_get_string(settingsfile,  MODE_OPTIONS_ENTRY, MODE_FFS_DAEMON_STOP, NULL);
+    self->ffs_daemon_mountpoint     = g_key_file_get_string(settingsfile,  MODE_OPTIONS_ENTRY, MODE_FFS_DAEMON_MOUNTPOINT, NULL);
 
     //log_debug("Dynamic mode sysfs path = %s\n", self->sysfs_path);
     //log_debug("Dynamic mode sysfs value = %s\n", self->sysfs_value);
