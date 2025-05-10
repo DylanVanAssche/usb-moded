@@ -4,6 +4,7 @@
  * Copyright (c) 2011 Nokia Corporation. All rights reserved.
  * Copyright (c) 2013 - 2020 Jolla Ltd.
  * Copyright (c) 2020 Open Mobile Platform LLC.
+ * Copyright (c) 2025 Dylan Van Assche
  *
  * @author Philippe De Swert <philippe.de-swert@nokia.com>
  * @author Philippe De Swert <phdeswer@lumi.maa>
@@ -13,6 +14,7 @@
  * @author Slava Monich <slava.monich@jolla.com>
  * @author Simo Piiroinen <simo.piiroinen@jollamobile.com>
  * @author Andrew den Exter <andrew.den.exter@jolla.com>
+ * @author Dylan Van Assche <me@dylanvanassche.be>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the Lesser GNU General Public License
@@ -89,6 +91,9 @@
 #  define MODE_CONNMAN_TETHERING         "connman_tethering"
 # endif
 
+# define MODE_FFS_DAEMON_START           "ffs_daemon_start"
+# define MODE_FFS_DAEMON_STOP            "ffs_daemon_stop"
+
 /* ========================================================================= *
  * Types
  * ========================================================================= */
@@ -128,6 +133,9 @@ typedef struct modedata_t
     gchar *cached_gateway;                 /**< Cached NETWORK_GATEWAY_KEY setting */
     gchar *cached_nat_interface;           /**< Cached NETWORK_NAT_INTERFACE_KEY setting */
     gchar *cached_netmask;                 /**< Cached NETWORK_NETMASK_KEY setting */
+
+    gchar *ffs_daemon_start;               /**< Command to execute when starting an USB mode */
+    gchar *ffs_daemon_stop;                /**< Command to execute when stopping an USB mode */
 
 } modedata_t;
 
