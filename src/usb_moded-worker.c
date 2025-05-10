@@ -196,6 +196,10 @@ worker_get_ffs_device_state(void)
 
     devstate_t state = DEVSTATE_UNKNOWN;
     const modedata_t *data = worker_get_usb_mode_data();
+
+    if( data->ffs_daemon_mountpoint == NULL )
+        return DEVSTATE_UNMOUNTED;
+
     gchar *path = g_strconcat("/dev/", data->ffs_daemon_mountpoint, "/ep0", NULL);
 
     if( access(path, F_OK) == 0 )
@@ -393,7 +397,7 @@ worker_stop_daemon(void)
     bool ack = false;
     const modedata_t *data = worker_get_usb_mode_data();
 
-    if( !worker_ffs_daemon_service_started && worker_ffs_daemon_stopped_p(0) ) {
+    if( data->ffs_daemon_mountpoint != NULL && !worker_ffs_daemon_service_started && worker_ffs_daemon_stopped_p(0) ) {
         log_debug("FunctionFS daemon is not running");
         goto SUCCESS;
     }
@@ -407,7 +411,7 @@ worker_stop_daemon(void)
     /* Have succesfully stopped FunctionFS daemon service */
     worker_ffs_daemon_service_started = false;
 
-    if( common_wait(worker_ffs_daemon_stop_delay, worker_ffs_daemon_stopped_p, 0) != WAIT_READY ) {
+    if( data->ffs_daemon_mountpoint != NULL && (common_wait(worker_ffs_daemon_stop_delay, worker_ffs_daemon_stopped_p, 0) != WAIT_READY) ) {
         log_warning("failed to stop FunctionFS daemon; giving up");
         goto FAILURE;
     }
@@ -429,7 +433,7 @@ worker_start_daemon(void)
     bool ack = false;
     const modedata_t *data = worker_get_usb_mode_data();
 
-    if( worker_ffs_daemon_running_p(0) ) {
+    if( data->ffs_daemon_mountpoint != NULL && worker_ffs_daemon_running_p(0) ) {
         log_debug("FunctionFS daemon is running");
         goto SUCCESS;
     }
@@ -443,7 +447,7 @@ worker_start_daemon(void)
         goto FAILURE;
     }
 
-    if( common_wait(worker_ffs_daemon_start_delay, worker_ffs_daemon_running_p, 0) != WAIT_READY ) {
+    if( data->ffs_daemon_mountpoint != NULL && (common_wait(worker_ffs_daemon_start_delay, worker_ffs_daemon_running_p, 0) != WAIT_READY) ) {
         log_warning("failed to start FunctionFS daemon; giving up");
         goto FAILURE;
     }
