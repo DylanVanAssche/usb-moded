@@ -648,6 +648,7 @@ bool usbmoded_can_export(void)
 
 /** Path to init-done flag file */
 static const char usbmoded_init_done_flagfile[] = "/run/systemd/boot-status/init-done";
+static const char usbmoded_init_done_softlevelfile[] = "/run/openrc/softlevel";
 
 /** cached init-done-reached state */
 static bool usbmoded_init_done_reached = false;
@@ -686,7 +687,20 @@ void usbmoded_probe_init_done(void)
 {
     LOG_REGISTER_CONTEXT;
 
-    usbmoded_set_init_done(access(usbmoded_init_done_flagfile, F_OK) == 0);
+    FILE *softlevel;
+    char level[20];
+
+    if (access(usbmoded_init_done_flagfile, F_OK) == 0) {
+        usbmoded_set_init_done(true);
+	return;
+    } else if (access(usbmoded_init_done_softlevelfile, F_OK) == 0) {
+       softlevel = fopen(usbmoded_init_done_softlevelfile, "r");
+       fread(level, sizeof(char), 20, softlevel);
+       if (strcmp(level, "default") == 0)
+           usbmoded_set_init_done(true);
+       fclose(softlevel);
+       return;
+    }
 }
 
 /* ------------------------------------------------------------------------- *
